@@ -8,12 +8,15 @@ This module implements the command-line interface to the Campfire API.
 
 """
 
-import sys
-import os
 import optparse
+import os
+import sys
 
-from .api import *
-from .exceptions import *
+from requests import Request
+from requests.exceptions import RequestException
+
+from .api import Campfire
+from .exceptions import CamplightException
 
 
 def die(msg):
