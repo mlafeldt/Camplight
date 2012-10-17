@@ -8,8 +8,6 @@ This module contains the exceptions raised by Camplight.
 
 """
 
-from requests.exceptions import *
-
 
 class CamplightException(RuntimeError):
     """Base class for Camplight exceptions."""

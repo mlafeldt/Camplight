@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+
 import mock
-import camplight
+
+from camplight import api, exceptions
 
 
 class CampfireTest(unittest.TestCase):
 
     def setUp(self):
         self.request = mock.Mock()
-        self.campfire = camplight.Campfire(self.request)
+        self.campfire = api.Campfire(self.request)
 
     def test_account(self):
         expect = {'subdomain': 'foobar', 'id': 12345678}
@@ -38,7 +40,8 @@ class CampfireTest(unittest.TestCase):
     def test_room_not_found(self):
         rooms = [{'name': 'Serious', 'id': 1000}]
         self.campfire.rooms = mock.Mock(return_value=rooms)
-        self.assertRaises(camplight.RoomNotFoundError, self.campfire.room, 'Danger')
+        self.assertRaises(exceptions.RoomNotFoundError,
+            self.campfire.room, 'Danger')
 
     def test_user_me(self):
         expect = {'name': 'John Doe', 'email_address': 'john.doe@gmail.com'}
@@ -63,7 +66,7 @@ class CampfireTest(unittest.TestCase):
         self.assertEqual(result, expect)
 
     def test_search(self):
-        expect = [{'body': 'ohai', 'type': camplight.MessageType.TEXT}]
+        expect = [{'body': 'ohai', 'type': api.MessageType.TEXT}]
         self.request.get.return_value = {'messages': expect}
         result = self.campfire.search('ohai')
         self.request.get.assert_called_once_with('/search/ohai')
