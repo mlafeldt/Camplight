@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import unittest
 import random
+import unittest
+
 import mock
-import camplight
+
+from camplight import api
 
 
 class RoomTest(unittest.TestCase):
@@ -11,7 +13,7 @@ class RoomTest(unittest.TestCase):
     def setUp(self):
         self.request = mock.Mock()
         self.room_id = random.randint(1, 1000000)
-        self.room = camplight.Room(self.request, self.room_id)
+        self.room = api.Room(self.request, self.room_id)
 
     def test_status(self):
         expect = {'name': 'Danger', 'topic': 'No serious discussion'}
@@ -21,14 +23,14 @@ class RoomTest(unittest.TestCase):
         self.assertEqual(result, expect)
 
     def test_recent(self):
-        expect = [{'body': 'Hello World', 'type': camplight.MessageType.TEXT}]
+        expect = [{'body': 'Hello World', 'type': api.MessageType.TEXT}]
         self.request.get.return_value = {'messages': expect}
         result = self.room.recent()
         self.request.get.assert_called_once_with('/room/%s/recent' % self.room_id)
         self.assertEqual(result, expect)
 
     def test_transcript(self):
-        expect = [{'body': 'Hello World', 'type': camplight.MessageType.TEXT}]
+        expect = [{'body': 'Hello World', 'type': api.MessageType.TEXT}]
         self.request.get.return_value = {'messages': expect}
         result = self.room.transcript()
         self.request.get.assert_called_once_with('/room/%s/transcript' % self.room_id)
@@ -70,7 +72,7 @@ class RoomTest(unittest.TestCase):
         self.assertEqual(result, expect)
 
     def test_paste(self):
-        expect = {'body': 'Hello World', 'type': camplight.MessageType.PASTE}
+        expect = {'body': 'Hello World', 'type': api.MessageType.PASTE}
         self.request.post.return_value = {'message': expect}
         result = self.room.paste('Hello World')
         self.request.post.assert_called_once_with('/room/%s/speak' % self.room_id,
@@ -78,9 +80,9 @@ class RoomTest(unittest.TestCase):
         self.assertEqual(result, expect)
 
     def test_play(self):
-        expect = {'body': camplight.Sound.YEAH, 'type': camplight.MessageType.SOUND}
+        expect = {'body': api.Sound.YEAH, 'type': api.MessageType.SOUND}
         self.request.post.return_value = {'message': expect}
-        result = self.room.play(camplight.Sound.YEAH)
+        result = self.room.play(api.Sound.YEAH)
         self.request.post.assert_called_once_with('/room/%s/speak' % self.room_id,
                                                   data={'message': expect})
         self.assertEqual(result, expect)
