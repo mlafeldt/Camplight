@@ -7,7 +7,7 @@ install_requires = ['requests>=0.12.1']
 tests_require = ['mock']
 
 setup(name='camplight',
-      version=camplight.__version__,
+      version='0.3',#camplight.__version__,
       author='Mathias Lafeldt',
       author_email='mathias.lafeldt@gmail.com',
       url='https://github.com/mlafeldt/camplight',
