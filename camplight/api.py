@@ -8,10 +8,11 @@ This module implements the Campfire API.
 
 """
 
-import requests
 import json
 
-from .exceptions import *
+import requests
+
+from .exceptions import RoomNotFoundError
 
 __all__ = ['Request', 'Campfire', 'Room', 'MessageType', 'Sound']
 

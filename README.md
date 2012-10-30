@@ -24,7 +24,7 @@ API Usage
 ---------
 
 ```python
-from camplight import Request, Campfire
+from camplight.api import Request, Campfire
 
 request = Request('https://your-subdomain.campfirenow.com', 'your_token')
 campfire = Campfire(request)
